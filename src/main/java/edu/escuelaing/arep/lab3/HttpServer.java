@@ -81,14 +81,25 @@ public class HttpServer {
 
     public static String muestraContenido(String archivo) throws FileNotFoundException, IOException {
         String cadena;
-        FileReader f = new FileReader(archivo);
-        BufferedReader b = new BufferedReader(f);
-        String out= "\r\n";
-        while((cadena = b.readLine())!=null) {
-            out= out + cadena +"\n";
+        try {
+            FileReader f = new FileReader(archivo);
+            BufferedReader b = new BufferedReader(f);
+            String out= "\r\n";
+            while((cadena = b.readLine())!=null) {
+                out= out + cadena +"\n";
+            }
+            b.close();
+            return out;
+        }catch(FileNotFoundException ex){
+            FileReader f = new FileReader("estilos.css");
+            BufferedReader b = new BufferedReader(f);
+            String out= "\r\n";
+            while((cadena = b.readLine())!=null) {
+                out= out + cadena +"\n";
+            }
+            b.close();
+            return out;
         }
-        b.close();
-        return out;
     }
 
     /**
