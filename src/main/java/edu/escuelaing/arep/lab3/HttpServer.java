@@ -65,10 +65,10 @@ public class HttpServer {
         String lectura;
         if(head.length==0){
             tipo= "html";
-            lectura= muestraContenido("index.html");
+            lectura= muestraContenido("target/classes/estilos.css");
         }
         else{
-            lectura= muestraContenido(head[1]);
+            lectura= muestraContenido("target/classes/"+head[1]);
             String typeList[]= head[1].split("\\.");
             tipo=typeList[1];
         }
@@ -93,7 +93,7 @@ public class HttpServer {
             b.close();
             return out;
         }catch(FileNotFoundException ex){
-            FileReader f = new FileReader("estilos.css");
+            FileReader f = new FileReader("target/classes/estilos.css");
             BufferedReader b = new BufferedReader(f);
             String out= "\r\n";
             while((cadena = b.readLine())!=null) {
