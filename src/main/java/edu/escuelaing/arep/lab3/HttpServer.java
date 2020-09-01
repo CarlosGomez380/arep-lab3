@@ -23,6 +23,7 @@ public class HttpServer {
             try {
                 System.out.println("Listo para recibir ...");
                 clientSocket = serverSocket.accept();
+                System.out.println(clientSocket);
             } catch (IOException e) {
                 System.err.println("Accept failed.");
                 System.exit(1);
@@ -32,6 +33,7 @@ public class HttpServer {
                     clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
+
             String inputLine, outputLine;
             outputLine=null;
             String firstLine=in.readLine();
