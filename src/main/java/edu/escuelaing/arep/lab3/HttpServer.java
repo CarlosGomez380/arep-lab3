@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 import java.net.*;
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class HttpServer {
 
@@ -38,11 +41,17 @@ public class HttpServer {
             outputLine=null;
             String firstLine=in.readLine();
             System.out.println(firstLine);
-            if(firstLine.equals("/App")){
-
+            String linea[]=firstLine.split(" ");
+            String head[]= linea[1].split("/");
+            System.out.println(head.length);
+            if(firstLine.contains("/App")){
+                if(head.length>2) {
+                    System.out.println("Estoy aqui");
+                    imprimirQuery(parseQuery(head[2]));
+                }
             }
             else{
-                outputLine= lecturaStaticFile(firstLine, outputLine);
+                outputLine= lecturaStaticFile(firstLine,head);
             }
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibí: " + inputLine);
@@ -58,17 +67,16 @@ public class HttpServer {
         serverSocket.close();
     }
 
-    public static String lecturaStaticFile(String firstLine, String outputLine) throws IOException {
-        String linea[]=firstLine.split(" ");
-        String head[]= linea[1].split("/");
+    public static String lecturaStaticFile(String firstLine,String[] head) throws IOException {
         String tipo;
         String lectura;
+        String outputLine;
         if(head.length==0){
             tipo= "html";
-            lectura= muestraContenido("target/classes/estilos.css");
+            lectura= muestraContenido("estilos.css");
         }
         else{
-            lectura= muestraContenido("target/classes/"+head[1]);
+            lectura= muestraContenido(head[1]);
             String typeList[]= head[1].split("\\.");
             tipo=typeList[1];
         }
@@ -93,7 +101,7 @@ public class HttpServer {
             b.close();
             return out;
         }catch(FileNotFoundException ex){
-            FileReader f = new FileReader("target/classes/estilos.css");
+            FileReader f = new FileReader("estilos.css");
             BufferedReader b = new BufferedReader(f);
             String out= "\r\n";
             while((cadena = b.readLine())!=null) {
@@ -116,5 +124,26 @@ public class HttpServer {
             return Integer.parseInt(System.getenv("PORT"));
         }
         return 4567; //returns default port if heroku-port isn't set (i.e. on localhost)
+    }
+
+    private static Map<String, String> parseQuery(String query) {
+        if( query == null) return null;
+        Map<String, String> theQuery = new HashMap();
+        String[] nameValuePairs = query.split("&");
+        for(String nameValuePair: nameValuePairs){
+            int index = nameValuePair.indexOf("=");
+            if(index!=-1){
+                theQuery.put(nameValuePair.substring(0, index), nameValuePair.substring(index+1));
+            }
+        }
+        return theQuery;
+    }
+
+    private static void imprimirQuery(Map<String, String> codes){
+        Iterator<Map.Entry<String, String>> i = codes.entrySet().iterator();
+        while(i.hasNext()){
+            String key = i.next().getKey();
+            System.out.println(key+", "+codes.get(key));
+        }
     }
 }
