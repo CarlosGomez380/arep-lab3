@@ -39,12 +39,14 @@ public class HttpServer {
                     clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
-
+            BufferedReader in3 = new BufferedReader(
+                    new InputStreamReader(clientSocket.getInputStream()));
             String inputLine, outputLine;
             outputLine=null;
             String firstLine=in.readLine();
+            String firstLine2=in3.readLine();
             System.out.println(firstLine);
-            System.out.println(firstLine);
+            System.out.println(firstLine2);
             System.out.println(firstLine);
             //String linea[]=firstLine.split(" ");
             //String head[]= linea[1].split("/");
