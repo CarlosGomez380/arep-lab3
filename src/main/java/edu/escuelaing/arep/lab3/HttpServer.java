@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 import java.net.*;
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -51,7 +54,8 @@ public class HttpServer {
                 }
             }
             else{
-                outputLine= lecturaStaticFile(firstLine,head);
+
+                outputLine= lecturaStaticFile(head);
             }
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibí: " + inputLine);
@@ -59,6 +63,17 @@ public class HttpServer {
                     break;
                 }
             }
+            Path file = Paths.get("estilos.css");
+            InputStream in2 = Files.newInputStream(file);
+            BufferedReader reader
+                    = new BufferedReader(new InputStreamReader(in2));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                out.println(line);
+                System.out.println(line);
+            }
+
+            
             out.println(outputLine);
             out.close();
             in.close();
@@ -67,7 +82,7 @@ public class HttpServer {
         serverSocket.close();
     }
 
-    public static String lecturaStaticFile(String firstLine,String[] head) throws IOException {
+    public static String lecturaStaticFile(String[] head) throws IOException {
         String tipo;
         String lectura;
         String outputLine;
