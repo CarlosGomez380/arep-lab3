@@ -48,37 +48,37 @@ public class HttpServer {
             System.out.println(firstLine);
             System.out.println(firstLine2);
             System.out.println(firstLine);
-            //String linea[]=firstLine.split(" ");
-            //String head[]= linea[1].split("/");
-            //System.out.println(head.length);
-            //if(firstLine.contains("/App")){
-            //    if(head.length>2) {
-            //        System.out.println("Estoy aqui");
-            //        imprimirQuery(parseQuery(head[2]));
-            //    }
-            //}
-            //else{
-            //
-            //    outputLine= lecturaStaticFile(head);
-            //}
+            String linea[]=firstLine.split(" ");
+            String head[]= linea[1].split("/");
+            System.out.println(head.length);
+            if(firstLine.contains("/App")){
+                if(head.length>2) {
+                    System.out.println("Estoy aqui");
+                    imprimirQuery(parseQuery(head[2]));
+                }
+            }
+            else{
+
+                outputLine= lecturaStaticFile(head);
+            }
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibí: " + inputLine);
                 if (!in.ready()) {
                     break;
                 }
             }
-            Path file = Paths.get("estilos.css");
-            InputStream in2 = Files.newInputStream(file);
-            BufferedReader reader
-                    = new BufferedReader(new InputStreamReader(in2));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                out.println(line);
-                System.out.println(line);
-            }
+            //Path file = Paths.get("estilos.css");
+            //InputStream in2 = Files.newInputStream(file);
+            //BufferedReader reader
+            //        = new BufferedReader(new InputStreamReader(in2));
+            //String line = null;
+            //while ((line = reader.readLine()) != null) {
+            //    out.println(line);
+            //    System.out.println(line);
+            //}
 
 
-            //out.println(outputLine);
+            out.println(outputLine);
             out.close();
             in.close();
             clientSocket.close();
