@@ -44,6 +44,8 @@ public class HttpServer {
             outputLine=null;
             String firstLine=in.readLine();
             System.out.println(firstLine);
+            System.out.println(firstLine);
+            System.out.println(firstLine);
             //String linea[]=firstLine.split(" ");
             //String head[]= linea[1].split("/");
             //System.out.println(head.length);
@@ -74,7 +76,7 @@ public class HttpServer {
             }
 
 
-            out.println(outputLine);
+            //out.println(outputLine);
             out.close();
             in.close();
             clientSocket.close();
