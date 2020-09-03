@@ -44,19 +44,19 @@ public class HttpServer {
             outputLine=null;
             String firstLine=in.readLine();
             System.out.println(firstLine);
-            String linea[]=firstLine.split(" ");
-            String head[]= linea[1].split("/");
-            System.out.println(head.length);
-            if(firstLine.contains("/App")){
-                if(head.length>2) {
-                    System.out.println("Estoy aqui");
-                    imprimirQuery(parseQuery(head[2]));
-                }
-            }
-            else{
-
-                outputLine= lecturaStaticFile(head);
-            }
+            //String linea[]=firstLine.split(" ");
+            //String head[]= linea[1].split("/");
+            //System.out.println(head.length);
+            //if(firstLine.contains("/App")){
+            //    if(head.length>2) {
+            //        System.out.println("Estoy aqui");
+            //        imprimirQuery(parseQuery(head[2]));
+            //    }
+            //}
+            //else{
+            //
+            //    outputLine= lecturaStaticFile(head);
+            //}
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibí: " + inputLine);
                 if (!in.ready()) {
@@ -73,7 +73,7 @@ public class HttpServer {
                 System.out.println(line);
             }
 
-            
+
             out.println(outputLine);
             out.close();
             in.close();
