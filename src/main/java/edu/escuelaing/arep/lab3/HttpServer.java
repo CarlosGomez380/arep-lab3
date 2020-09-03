@@ -8,9 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class HttpServer {
 
@@ -43,6 +41,11 @@ public class HttpServer {
                     new InputStreamReader(clientSocket.getInputStream()));
             String inputLine, outputLine;
             outputLine=null;
+            try {
+                new Timer().wait(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             String firstLine=in.readLine();
             String firstLine2=in3.readLine();
             System.out.println(firstLine);
@@ -67,14 +70,7 @@ public class HttpServer {
                     break;
                 }
             }
-            Path file = Paths.get("estilos.css");
-            InputStream in2 = Files.newInputStream(file);
-            BufferedReader reader
-                    = new BufferedReader(new InputStreamReader(in2));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                out.println(line);
-            }
+            
 
 
             out.println(outputLine);
