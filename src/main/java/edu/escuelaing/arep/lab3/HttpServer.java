@@ -42,9 +42,10 @@ public class HttpServer {
             String inputLine, outputLine;
             outputLine=null;
             try {
-                new Timer().wait(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                //Ponemos a "Dormir" el programa durante los ms que queremos
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                System.out.println(e);
             }
             String firstLine=in.readLine();
             String firstLine2=in3.readLine();
@@ -71,7 +72,6 @@ public class HttpServer {
                 }
             }
             
-
 
             out.println(outputLine);
             out.close();
