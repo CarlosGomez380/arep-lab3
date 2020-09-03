@@ -73,7 +73,7 @@ public class HttpServer {
                     = new BufferedReader(new InputStreamReader(in2));
             String line = null;
             while ((line = reader.readLine()) != null) {
-                //out.println(line);
+                out.println(line);
             }
 
 
