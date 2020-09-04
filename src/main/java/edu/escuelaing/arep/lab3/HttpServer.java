@@ -43,7 +43,7 @@ public class HttpServer {
             outputLine=null;
             try {
                 //Ponemos a "Dormir" el programa durante los ms que queremos
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -71,7 +71,15 @@ public class HttpServer {
                     break;
                 }
             }
-            
+            Path file = Paths.get("estilos.css");
+            InputStream in2 = Files.newInputStream(file);
+            BufferedReader reader
+                    = new BufferedReader(new InputStreamReader(in2));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                out.println(line);
+            }
+
 
             out.println(outputLine);
             out.close();
