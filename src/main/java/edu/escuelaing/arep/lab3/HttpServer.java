@@ -4,8 +4,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.net.*;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class HttpServer {
@@ -42,15 +40,19 @@ public class HttpServer {
                 }
             }
             leerFormato(firstLine,clientSocket);
-            //PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            //out.println(outputLine);
-            //out.close();
             in.close();
             clientSocket.close();
         }
         serverSocket.close();
     }
 
+    /**
+     * Metodo encargado de devolver la primera linea no nula de parte del cliente
+     * @param firstLine, primera linea del inputStream
+     * @param serverSocket, Socket del servidor
+     * @return Primera linea no vacia del inputStream
+     * @throws IOException
+     */
     public static String establecerConexion(String firstLine,ServerSocket serverSocket) throws IOException {
         while(firstLine==null){
             Socket clientSocket = null;
@@ -68,6 +70,12 @@ public class HttpServer {
         return firstLine;
     }
 
+    /**
+     * Metodo encargado de decidir archivos estaticos o un query
+     * @param firstLine, Primera linea del inputStream
+     * @param clientSocket, Socket sel cliente
+     * @throws IOException
+     */
     public static void leerFormato(String firstLine,Socket clientSocket) throws IOException {
         String linea[]=firstLine.split(" ");
         String head[]= linea[1].split("/");
@@ -82,10 +90,15 @@ public class HttpServer {
         }
     }
 
+    /**
+     * Metodo encargado de leer los archivos estaticos dependiendo de su extensión.
+     * @param head, Nombre del archivo a leer
+     * @param clientSocket, Socket del cliente
+     * @throws IOException
+     */
     public static void lecturaStaticFile(String[] head, Socket clientSocket) throws IOException {
         String tipo;
         String lectura;
-        boolean imagenJPG;
         if(head.length==0){
             tipo= "css";
             lectura= muestraContenido("estilos.css");
@@ -104,6 +117,13 @@ public class HttpServer {
         }
     }
 
+    /**
+     * Metodo encargado de leer un archivo especifico
+     * @param archivo, Nombre del archivo
+     * @return Cadena con el contenido del archivo
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static String muestraContenido(String archivo) throws FileNotFoundException, IOException {
         String cadena;
         try {
@@ -127,10 +147,13 @@ public class HttpServer {
         }
     }
 
+    /**
+     * Metodo encargado de mostrar imagenes jpg en al cliente
+     * @param file, Nombre del archivo jpg
+     * @param clientSocket, Socket del cliente
+     * @throws IOException
+     */
     public static void outputImagen(String file, Socket clientSocket) throws IOException {
-        System.out.println("Aquie es");
-        Path imagen = Paths.get(file);
-        System.out.println(imagen.toString());
         BufferedImage image = ImageIO.read(new File(file));
         ByteArrayOutputStream ArrBytes = new ByteArrayOutputStream();
         OutputStream outputStream=clientSocket.getOutputStream();
@@ -141,9 +164,15 @@ public class HttpServer {
                 + "\r\n");
         out.write(ArrBytes.toByteArray());
         out.close();
-
     }
 
+    /**
+     * Metodo encargado de mostrar archivos diferentes a imagenes
+     * @param lectura, Cadena que muestra como leer el archivo por el navegador
+     * @param tipo, Extensión del archivo
+     * @param clientSocket, Socket del cliente
+     * @throws IOException
+     */
     public static void outputFile(String lectura,String tipo, Socket clientSocket) throws IOException {
         PrintWriter out = new PrintWriter(
                 clientSocket.getOutputStream(), true);
