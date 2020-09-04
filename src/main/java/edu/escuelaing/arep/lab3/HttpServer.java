@@ -1,13 +1,7 @@
 package edu.escuelaing.arep.lab3;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.net.*;
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class HttpServer {
@@ -37,28 +31,17 @@ public class HttpServer {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
             String firstLine=in.readLine();
+
             firstLine= establecerConexion(firstLine,serverSocket);
             System.out.println(firstLine);
-            String inputLine, outputLine;
-            outputLine=null;
-            String linea[]=firstLine.split(" ");
-            String head[]= linea[1].split("/");
-            System.out.println(head.length);
-            if(firstLine.contains("/App")){
-                if(head.length>2) {
-                    System.out.println("Estoy aqui");
-                    imprimirQuery(parseQuery(head[2]));
-                }
-            }
-            else{
-                outputLine= lecturaStaticFile(head);
-            }
+            String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibí: " + inputLine);
                 if (!in.ready()) {
                     break;
                 }
             }
+            String outputLine =leerFormato(firstLine);
             out.println(outputLine);
             out.close();
             in.close();
@@ -83,6 +66,25 @@ public class HttpServer {
         }
         return firstLine;
     }
+
+    public static String leerFormato(String firstLine) throws IOException {
+        String outputLine;
+        outputLine=null;
+        String linea[]=firstLine.split(" ");
+        String head[]= linea[1].split("/");
+        System.out.println(head.length);
+        if(firstLine.contains("/App")){
+            if(head.length>2) {
+                System.out.println("Estoy aqui");
+                imprimirQuery(parseQuery(head[2]));
+            }
+        }
+        else{
+            outputLine= lecturaStaticFile(head);
+        }
+        return outputLine;
+    }
+
     public static String lecturaStaticFile(String[] head) throws IOException {
         String tipo;
         String lectura;
