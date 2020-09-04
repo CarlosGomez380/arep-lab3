@@ -88,7 +88,7 @@ public class HttpServer {
         String lectura;
         String outputLine;
         if(head.length==0){
-            tipo= "html";
+            tipo= "css";
             lectura= muestraContenido("estilos.css");
         }
         else{
