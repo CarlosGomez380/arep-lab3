@@ -37,8 +37,9 @@ public class HttpServer {
                     clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
-            BufferedReader in3 = new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream()));
+            while(in == null){
+                System.out.println("Todavia no");
+            }
             String inputLine, outputLine;
             outputLine=null;
             String firstLine=in.readLine();
