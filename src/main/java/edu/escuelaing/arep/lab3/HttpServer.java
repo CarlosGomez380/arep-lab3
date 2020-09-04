@@ -63,19 +63,7 @@ public class HttpServer {
             //        break;
             //    }
             //}
-            Path file = Paths.get("estilos.css");
-            InputStream in2 = Files.newInputStream(file);
-            BufferedReader reader
-                    = new BufferedReader(new InputStreamReader(in2));
-            String line = null;
-            outputLine = "HTTP/1.1 200 OK\r\n"
-                    + "Content-Type: text/" + "css" + "\r\n"
-                    + "\r\n";
-            out.println(outputLine);
-            while ((line = reader.readLine()) != null) {
-                out.println(line);
-            }
-
+            
 
             //out.println(outputLine);
             out.close();
