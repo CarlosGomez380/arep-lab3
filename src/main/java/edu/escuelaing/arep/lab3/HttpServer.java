@@ -32,25 +32,12 @@ public class HttpServer {
                 System.err.println("Accept failed.");
                 System.exit(1);
             }
-
             PrintWriter out = new PrintWriter(
                     clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
             String firstLine=in.readLine();
-            while(firstLine==null){
-                clientSocket = null;
-                try {
-                    System.out.println("Listo para recibir ...");
-                    clientSocket = serverSocket.accept();
-                } catch (IOException e) {
-                    System.err.println("Accept failed.");
-                    System.exit(1);
-                }
-                in = new BufferedReader(
-                        new InputStreamReader(clientSocket.getInputStream()));
-                firstLine=in.readLine();
-            }
+            firstLine= establecerConexion(firstLine,serverSocket);
             System.out.println(firstLine);
             String inputLine, outputLine;
             outputLine=null;
@@ -72,9 +59,6 @@ public class HttpServer {
                     break;
                 }
             }
-
-
-
             out.println(outputLine);
             out.close();
             in.close();
@@ -83,6 +67,22 @@ public class HttpServer {
         serverSocket.close();
     }
 
+    public static String establecerConexion(String firstLine,ServerSocket serverSocket) throws IOException {
+        while(firstLine==null){
+            Socket clientSocket = null;
+            try {
+                System.out.println("Listo para recibir ...");
+                clientSocket = serverSocket.accept();
+            } catch (IOException e) {
+                System.err.println("Accept failed.");
+                System.exit(1);
+            }
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(clientSocket.getInputStream()));
+            firstLine=in.readLine();
+        }
+        return firstLine;
+    }
     public static String lecturaStaticFile(String[] head) throws IOException {
         String tipo;
         String lectura;
