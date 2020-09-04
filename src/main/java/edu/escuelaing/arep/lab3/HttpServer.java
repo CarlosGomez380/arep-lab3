@@ -42,10 +42,17 @@ public class HttpServer {
             outputLine=null;
             String firstLine=in.readLine();
             while(firstLine==null){
+                clientSocket = null;
+                try {
+                    System.out.println("Listo para recibir ...");
+                    clientSocket = serverSocket.accept();
+                } catch (IOException e) {
+                    System.err.println("Accept failed.");
+                    System.exit(1);
+                }
                 in = new BufferedReader(
                         new InputStreamReader(clientSocket.getInputStream()));
                 firstLine=in.readLine();
-                System.out.println("Todavia no");
             }
             System.out.println(firstLine);
             //String linea[]=firstLine.split(" ");
