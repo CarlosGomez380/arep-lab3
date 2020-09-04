@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.net.*;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class HttpServer {
@@ -69,7 +71,6 @@ public class HttpServer {
     public static void leerFormato(String firstLine,Socket clientSocket) throws IOException {
         String linea[]=firstLine.split(" ");
         String head[]= linea[1].split("/");
-        System.out.println(head.length);
         if(firstLine.contains("/App")){
             if(head.length>2) {
                 System.out.println("Estoy aqui");
@@ -94,7 +95,7 @@ public class HttpServer {
             String typeList[]= head[1].split("\\.");
             tipo=typeList[1];
             if(tipo.equals("jpg")){
-
+                outputImagen(head[1],clientSocket);
             }
             else{
                 lectura= muestraContenido(head[1]);
@@ -127,7 +128,10 @@ public class HttpServer {
     }
 
     public static void outputImagen(String file, Socket clientSocket) throws IOException {
-        BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + file));
+        System.out.println("Aquie es");
+        Path imagen = Paths.get(file);
+        System.out.println(imagen.toString());
+        BufferedImage image = ImageIO.read(new File(file));
         ByteArrayOutputStream ArrBytes = new ByteArrayOutputStream();
         OutputStream outputStream=clientSocket.getOutputStream();
         DataOutputStream out = new DataOutputStream(outputStream);
@@ -146,8 +150,6 @@ public class HttpServer {
                             + "Content-Type: text/" + tipo + "\r\n"
                             + "\r\n"
                             +lectura;
-
-
         out.println(outputLine);
         out.close();
     }
