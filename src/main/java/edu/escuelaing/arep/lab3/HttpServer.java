@@ -37,7 +37,7 @@ public class HttpServer {
                     clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
-            while(in == null){
+            while(in.equals(null)){
                 System.out.println("Todavia no");
             }
             String inputLine, outputLine;
