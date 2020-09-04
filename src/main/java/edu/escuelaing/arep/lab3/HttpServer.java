@@ -140,6 +140,7 @@ public class HttpServer {
                 + "Content-Type: image/jpg \r\n"
                 + "\r\n");
         out.write(ArrBytes.toByteArray());
+        out.close();
 
     }
 
