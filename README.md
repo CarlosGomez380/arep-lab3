@@ -36,8 +36,7 @@ And copy:
 mvn clean install
 ```
 
-
-
+![](https://github.com/CarlosGomez380/arep-lab3/blob/master/img/Install.PNG)
 
 ## Deployment
 
@@ -46,17 +45,16 @@ To deploy this project open the folder of this project and a command prompt on t
 ```
 java -cp target/classes;target/dependency/* edu.escuelaing.arep.lab3.HttpServer
 ```
-
-
+![](https://github.com/CarlosGomez380/arep-lab3/blob/master/img/deployConsola.PNG)
 
 Open your browser and type:
 
 ```
-http://localhost:4567/estilos.css
+http://localhost:4567/panda1.jpg
 ```
 
 
-
+![](https://github.com/CarlosGomez380/arep-lab3/blob/master/img/deploy.PNG)
 
 ## Documentation JavaDoc
 
