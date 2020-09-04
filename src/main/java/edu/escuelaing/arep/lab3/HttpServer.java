@@ -41,47 +41,42 @@ public class HttpServer {
                     new InputStreamReader(clientSocket.getInputStream()));
             String inputLine, outputLine;
             outputLine=null;
-            try {
-                //Ponemos a "Dormir" el programa durante los ms que queremos
-                Thread.sleep(5000);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
             String firstLine=in.readLine();
-            String firstLine2=in3.readLine();
             System.out.println(firstLine);
-            System.out.println(firstLine2);
-            System.out.println(firstLine);
-            String linea[]=firstLine.split(" ");
-            String head[]= linea[1].split("/");
-            System.out.println(head.length);
-            if(firstLine.contains("/App")){
-                if(head.length>2) {
-                    System.out.println("Estoy aqui");
-                    imprimirQuery(parseQuery(head[2]));
-                }
-            }
-            else{
+            //String linea[]=firstLine.split(" ");
+            //String head[]= linea[1].split("/");
+            //System.out.println(head.length);
+            //if(firstLine.contains("/App")){
+            //    if(head.length>2) {
+            //        System.out.println("Estoy aqui");
+            //        imprimirQuery(parseQuery(head[2]));
+            //    }
+            //}
+            //else{
 
-                outputLine= lecturaStaticFile(head);
-            }
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println("Recibí: " + inputLine);
-                if (!in.ready()) {
-                    break;
-                }
-            }
+            //    outputLine= lecturaStaticFile(head);
+            //}
+            //while ((inputLine = in.readLine()) != null) {
+            //    System.out.println("Recibí: " + inputLine);
+            //    if (!in.ready()) {
+            //        break;
+            //    }
+            //}
             Path file = Paths.get("estilos.css");
             InputStream in2 = Files.newInputStream(file);
             BufferedReader reader
                     = new BufferedReader(new InputStreamReader(in2));
             String line = null;
+            outputLine = "HTTP/1.1 200 OK\r\n"
+                    + "Content-Type: text/" + "css" + "\r\n"
+                    + "\r\n";
+            out.println(outputLine);
             while ((line = reader.readLine()) != null) {
                 out.println(line);
             }
 
 
-            out.println(outputLine);
+            //out.println(outputLine);
             out.close();
             in.close();
             clientSocket.close();
