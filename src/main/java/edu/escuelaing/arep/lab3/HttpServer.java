@@ -1,5 +1,7 @@
 package edu.escuelaing.arep.lab3;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -14,7 +16,6 @@ public class HttpServer {
             System.err.println("Could not listen on port: "+ getPort() +".");
             System.exit(1);
         }
-
         boolean running = true;
         while (running) {
             Socket clientSocket = null;
@@ -26,12 +27,9 @@ public class HttpServer {
                 System.err.println("Accept failed.");
                 System.exit(1);
             }
-            PrintWriter out = new PrintWriter(
-                    clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
             String firstLine=in.readLine();
-
             firstLine= establecerConexion(firstLine,serverSocket);
             System.out.println(firstLine);
             String inputLine;
@@ -41,9 +39,10 @@ public class HttpServer {
                     break;
                 }
             }
-            String outputLine =leerFormato(firstLine);
-            out.println(outputLine);
-            out.close();
+            leerFormato(firstLine,clientSocket);
+            //PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            //out.println(outputLine);
+            //out.close();
             in.close();
             clientSocket.close();
         }
@@ -67,9 +66,7 @@ public class HttpServer {
         return firstLine;
     }
 
-    public static String leerFormato(String firstLine) throws IOException {
-        String outputLine;
-        outputLine=null;
+    public static void leerFormato(String firstLine,Socket clientSocket) throws IOException {
         String linea[]=firstLine.split(" ");
         String head[]= linea[1].split("/");
         System.out.println(head.length);
@@ -80,31 +77,30 @@ public class HttpServer {
             }
         }
         else{
-            outputLine= lecturaStaticFile(head);
+            lecturaStaticFile(head,clientSocket);
         }
-        return outputLine;
     }
 
-    public static String lecturaStaticFile(String[] head) throws IOException {
+    public static void lecturaStaticFile(String[] head, Socket clientSocket) throws IOException {
         String tipo;
         String lectura;
-        String outputLine;
+        boolean imagenJPG;
         if(head.length==0){
             tipo= "css";
             lectura= muestraContenido("estilos.css");
+            outputFile(lectura,tipo,clientSocket);
         }
         else{
-            lectura= muestraContenido(head[1]);
             String typeList[]= head[1].split("\\.");
             tipo=typeList[1];
+            if(tipo.equals("jpg")){
+
+            }
+            else{
+                lectura= muestraContenido(head[1]);
+                outputFile(lectura,tipo,clientSocket);
+            }
         }
-
-        outputLine = "HTTP/1.1 200 OK\r\n"
-                + "Content-Type: text/" + tipo + "\r\n"
-                + "\r\n"
-                + lectura;
-
-        return outputLine;
     }
 
     public static String muestraContenido(String archivo) throws FileNotFoundException, IOException {
@@ -128,6 +124,32 @@ public class HttpServer {
             b.close();
             return out;
         }
+    }
+
+    public static void outputImagen(String file, Socket clientSocket) throws IOException {
+        BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + file));
+        ByteArrayOutputStream ArrBytes = new ByteArrayOutputStream();
+        OutputStream outputStream=clientSocket.getOutputStream();
+        DataOutputStream out = new DataOutputStream(outputStream);
+        ImageIO.write(image, "JPG", ArrBytes);
+        out.writeBytes("HTTP/1.1 200 OK \r\n"
+                + "Content-Type: image/jpg \r\n"
+                + "\r\n");
+        out.write(ArrBytes.toByteArray());
+
+    }
+
+    public static void outputFile(String lectura,String tipo, Socket clientSocket) throws IOException {
+        PrintWriter out = new PrintWriter(
+                clientSocket.getOutputStream(), true);
+        String outputLine= "HTTP/1.1 200 OK\r\n"
+                            + "Content-Type: text/" + tipo + "\r\n"
+                            + "\r\n"
+                            +lectura;
+
+
+        out.println(outputLine);
+        out.close();
     }
 
     /**
